@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
 
     // Vérification si l'utilisateur existe déjà
     const isExistingUser = await User.findOne({ email });
@@ -24,6 +24,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 
     // Création de l'utilisateur
     const user = new User({
+      username,
       email,
       password: hashedPassword,
     });
@@ -78,6 +79,7 @@ router.post('/signin', async (req: Request, res: Response): Promise<void> => {
       success: true,
       token,
       userId: currentUser._id,
+      username: currentUser.username,
     });
   } catch (error) {
     console.error('Erreur lors de la connexion de l’utilisateur :', error);
